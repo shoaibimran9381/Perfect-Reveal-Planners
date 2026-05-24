@@ -1,0 +1,7 @@
+[
+  {
+    "key": "cmd+alt+o",
+    "command": "workbench.action.output.toggleOutput",
+    "when": "editorTextFocus"
+  }
+]

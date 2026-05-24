@@ -228,6 +228,8 @@ footer{background:var(--black2);border-top:1px solid rgba(201,168,76,0.12);paddi
 .footer-col ul li a:hover{color:var(--gold)}
 .footer-bottom{border-top:1px solid rgba(201,168,76,0.08);padding:1.5rem 4rem;display:flex;justify-content:space-between;align-items:center;background:var(--black2)}
 .footer-copy{font-size:0.7rem;color:rgba(253,248,238,0.2)}
+.link-count{font-size:0.7rem;color:rgba(253,248,238,0.35);letter-spacing:0.12em;text-transform:uppercase}
+.link-count span{color:var(--gold)}
 .footer-social{display:flex;gap:0.8rem}
 .social-icon{width:32px;height:32px;border:1px solid rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.3s;font-size:0.85rem}
 .social-icon:hover{border-color:var(--gold);background:rgba(201,168,76,0.08)}

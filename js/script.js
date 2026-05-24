@@ -43,6 +43,36 @@ const counterObs=new IntersectionObserver(entries=>{
 },{threshold:0.5});
 document.querySelectorAll('.stat-num[data-count]').forEach(el=>counterObs.observe(el));
 
+// LOCAL LINK PRESS COUNTER
+(()=>{
+  const storageKey = 'perfectRevealLinkPressCount';
+  const countEl = document.getElementById('linkPressCount');
+  const trackedLinkSelectors = [
+    'a[href*="wa.me"]',
+    'a[href*="instagram.com"]',
+    'button[onclick*="wa.me"]',
+    'button[onclick*="instagram.com"]'
+  ];
+
+  function getCount(){
+    return Number(localStorage.getItem(storageKey) || 0);
+  }
+
+  function updateCount(){
+    if(countEl) countEl.textContent = getCount();
+  }
+
+  function saveClick(){
+    localStorage.setItem(storageKey, String(getCount() + 1));
+    updateCount();
+  }
+
+  updateCount();
+  document.querySelectorAll(trackedLinkSelectors.join(',')).forEach(el=>{
+    el.addEventListener('click', saveClick, {capture:true});
+  });
+})();
+
 // TESTIMONIAL CAROUSEL
 let currentSlide=0;const totalSlides=4;
 function goToSlide(n){

@@ -78,7 +78,7 @@
     <div class="about-stats reveal reveal-delay-4">
       <div><span class="astat-num">200+</span><div class="astat-label">Surprises</div></div>
       <div><span class="astat-num">5★</span><div class="astat-label">Avg. Rating</div></div>
-      <div><span class="astat-num">1yr</span><div class="astat-label">Experience</div></div>
+      <div><span class="astat-num">6+ mos</span><div class="astat-label">Experience</div></div>
     </div>
   </div>
 </section>
@@ -224,20 +224,53 @@
   <div class="divider reveal"><hr><div class="divider-gem"></div><hr></div>
   <div class="testi-carousel reveal">
     <div class="testi-slides" id="testiSlides">
-      <div class="testi-slide"><div class="testi-card"><div class="testi-quote">"</div><div class="testi-stars">★★★★★</div><p class="testi-text">My partner was absolutely speechless. Every single detail was perfect — the roses, the cake, the timing. Perfect Reveal truly lives up to their name.</p><div class="testi-author">Priya Sharma</div><div class="testi-role">Anniversary Surprise · Hyderabad</div></div></div>
-      <div class="testi-slide"><div class="testi-card"><div class="testi-quote">"</div><div class="testi-stars">★★★★★</div><p class="testi-text">I booked the Platinum plan for my mother's birthday. She cried happy tears. Worth every rupee — the photo frame alone was absolutely stunning.</p><div class="testi-author">Rahul Nair</div><div class="testi-role">Birthday Surprise · Hyderabad</div></div></div>
-      <div class="testi-slide"><div class="testi-card"><div class="testi-quote">"</div><div class="testi-stars">★★★★★</div><p class="testi-text">The Teddy Man surprise was such a unique touch! They were professional, punctual, and turned an ordinary evening into something extraordinary.</p><div class="testi-author">Ananya Reddy</div><div class="testi-role">Proposal · Hyderabad</div></div></div>
-      <div class="testi-slide"><div class="testi-card"><div class="testi-quote">"</div><div class="testi-stars">★★★★★</div><p class="testi-text">Booked for my girlfriend's birthday with only 2 days notice. They pulled off a flawless surprise delivery. The customized cake was beautiful!</p><div class="testi-author">Karthik Varma</div><div class="testi-role">Birthday Surprise · Hyderabad</div></div></div>
+      <!-- Reviews will be loaded here dynamically -->
     </div>
     <div class="testi-nav" id="testiNav">
-      <div class="testi-dot active" onclick="goToSlide(0)"></div>
-      <div class="testi-dot" onclick="goToSlide(1)"></div>
-      <div class="testi-dot" onclick="goToSlide(2)"></div>
-      <div class="testi-dot" onclick="goToSlide(3)"></div>
+      <!-- Dots will be generated dynamically -->
     </div>
     <div class="testi-arrows">
       <button class="testi-arrow" onclick="changeSlide(-1)">←</button>
       <button class="testi-arrow" onclick="changeSlide(1)">→</button>
+    </div>
+  </div>
+
+  <!-- REVIEW SUBMISSION FORM -->
+  <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(201,168,76,0.15)">
+    <div class="form-section reveal">
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--gold);margin-bottom:1rem;text-align:center">Share Your Experience</h3>
+      <p style="text-align:center;color:rgba(253,248,238,0.5);font-size:0.9rem;margin-bottom:2rem">We'd love to hear about your Perfect Reveal experience</p>
+      <form id="reviewForm" onsubmit="submitReview(event)" style="max-width:600px;margin:0 auto">
+        <div class="form-group">
+          <label style="display:block;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">Your Name *</label>
+          <input type="text" id="reviewName" placeholder="Enter your name" required style="width:100%;padding:0.8rem;background:rgba(201,168,76,0.03);border:1px solid rgba(201,168,76,0.15);color:var(--cream);border-radius:3px;font-family:inherit">
+        </div>
+        <div class="form-group">
+          <label style="display:block;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">Email *</label>
+          <input type="email" id="reviewEmail" placeholder="your@email.com" required style="width:100%;padding:0.8rem;background:rgba(201,168,76,0.03);border:1px solid rgba(201,168,76,0.15);color:var(--cream);border-radius:3px;font-family:inherit">
+        </div>
+        <div class="form-group">
+          <label style="display:block;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">Occasion / Event *</label>
+          <input type="text" id="reviewRole" placeholder="e.g., Anniversary Surprise · Hyderabad" required style="width:100%;padding:0.8rem;background:rgba(201,168,76,0.03);border:1px solid rgba(201,168,76,0.15);color:var(--cream);border-radius:3px;font-family:inherit">
+        </div>
+        <div class="form-group">
+          <label style="display:block;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">Rating *</label>
+          <select id="reviewRating" required style="width:100%;padding:0.8rem;background:rgba(201,168,76,0.03);border:1px solid rgba(201,168,76,0.15);color:var(--cream);border-radius:3px;font-family:inherit">
+            <option value="">Select a rating...</option>
+            <option value="5">⭐⭐⭐⭐⭐ 5 Stars - Excellent</option>
+            <option value="4">⭐⭐⭐⭐ 4 Stars - Very Good</option>
+            <option value="3">⭐⭐⭐ 3 Stars - Good</option>
+            <option value="2">⭐⭐ 2 Stars - Fair</option>
+            <option value="1">⭐ 1 Star - Poor</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label style="display:block;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">Your Review *</label>
+          <textarea id="reviewText" placeholder="Tell us about your experience..." required style="width:100%;padding:0.8rem;background:rgba(201,168,76,0.03);border:1px solid rgba(201,168,76,0.15);color:var(--cream);border-radius:3px;font-family:inherit;min-height:120px;resize:vertical"></textarea>
+        </div>
+        <div id="reviewMessage" style="margin-bottom:1rem;padding:0.8rem;border-radius:3px;display:none;text-align:center;font-size:0.9rem"></div>
+        <button type="submit" style="width:100%;padding:1rem;background:var(--gold);color:var(--black);border:none;border-radius:3px;cursor:pointer;font-weight:600;font-size:0.95rem;letter-spacing:0.1em;text-transform:uppercase;transition:all 0.3s">Submit Your Review</button>
+      </form>
     </div>
   </div>
 </section>

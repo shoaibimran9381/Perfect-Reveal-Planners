@@ -192,6 +192,25 @@ section{padding:6rem 4rem}
 .testi-arrow{width:40px;height:40px;border:1px solid rgba(201,168,76,0.3);background:transparent;color:var(--gold);cursor:pointer;font-size:1rem;transition:all 0.3s;display:flex;align-items:center;justify-content:center}
 .testi-arrow:hover{background:var(--gold);color:var(--black);border-color:var(--gold)}
 
+/* OWNER RESPONSE */
+.owner-response{margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(201,168,76,0.1)}
+.owner-response-header{display:flex;align-items:center;justify-content:space-between;cursor:pointer;color:var(--gold);font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;user-select:none;transition:color 0.3s}
+.owner-response-header:hover{color:rgba(201,168,76,0.8)}
+.owner-name{font-weight:500}
+.expand-icon{font-size:0.6rem;transition:transform 0.3s ease}
+.owner-response-text{margin-top:1rem;font-family:'Cormorant Garamond',serif;font-size:1rem;line-height:1.7;color:rgba(253,248,238,0.6);font-style:italic;max-height:0;opacity:0;overflow:hidden;transition:all 0.4s ease}
+.owner-response-text[style*="display: block"]{max-height:500px;opacity:1}
+
+/* REVIEW FORM */
+.form-section{padding:2rem}
+.form-group{margin-bottom:1.5rem}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:0.8rem;background:rgba(201,168,76,0.03);border:1px solid rgba(201,168,76,0.15);color:var(--cream);font-family:inherit;border-radius:3px;transition:all 0.3s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--gold);background:rgba(201,168,76,0.08)}
+.form-group textarea{resize:vertical;min-height:120px}
+.review-message{padding:1rem;border-radius:3px;font-size:0.9rem;text-align:center;margin-bottom:1rem}
+.review-message.success{background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);color:#86efac}
+.review-message.error{background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.3);color:#fca5a5}
+
 /* CTA */
 .cta-section{text-align:center;padding:8rem 4rem;position:relative;overflow:hidden;background:var(--black)}
 .cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(201,168,76,0.1) 0%,transparent 70%)}
@@ -265,4 +284,10 @@ footer{background:var(--black2);border-top:1px solid rgba(201,168,76,0.12);paddi
   .testi-dot.active{width:34px}
   .testi-arrows{margin-top:1rem}
   .testi-arrow{width:36px;height:36px}
+  .owner-response{margin-top:1.2rem;padding-top:1rem}
+  .owner-response-header{font-size:0.72rem}
+  .owner-response-text{font-size:0.92rem;line-height:1.6}
+  .form-section{padding:1.5rem}
+  .form-group input,.form-group select,.form-group textarea{padding:0.7rem;font-size:1rem}
+  .form-group textarea{min-height:100px}
 }

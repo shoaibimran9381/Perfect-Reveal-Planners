@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "name": "Priya Sharma",
+    "text": "My partner was absolutely speechless. Every single detail was perfect — the roses, the cake, the timing. Perfect Reveal truly lives up to their name.",
+    "rating": 5,
+    "role": "Anniversary Surprise · Hyderabad",
+    "date": "2026-05-20",
+    "ownerResponse": "Thank you so much Priya! Your partner's smile was everything we worked for. We're honored to be part of your special moment. We'd love to help you celebrate more milestones together!"
+  },
+  {
+    "id": 2,
+    "name": "Rahul Nair",
+    "text": "I booked the Platinum plan for my mother's birthday. She cried happy tears. Worth every rupee — the photo frame alone was absolutely stunning.",
+    "rating": 5,
+    "role": "Birthday Surprise · Hyderabad",
+    "date": "2026-05-18",
+    "ownerResponse": "Rahul, your mother's happiness made our day! Platinum plan clients always get the best, and we're thrilled the photo frame was a hit. Birthdays are meant to be unforgettable!"
+  },
+  {
+    "id": 3,
+    "name": "Ananya Reddy",
+    "text": "The Teddy Man surprise was such a unique touch! They were professional, punctual, and turned an ordinary evening into something extraordinary.",
+    "rating": 5,
+    "role": "Proposal · Hyderabad",
+    "date": "2026-05-15",
+    "ownerResponse": "Congratulations on your engagement, Ananya! We loved being part of that magical moment. The Teddy Man always brings smiles, and your proposal will be remembered forever!"
+  },
+  {
+    "id": 4,
+    "name": "Karthik Varma",
+    "text": "Booked for my girlfriend's birthday with only 2 days notice. They pulled off a flawless surprise delivery. The customized cake was beautiful!",
+    "rating": 5,
+    "role": "Birthday Surprise · Hyderabad",
+    "date": "2026-05-10",
+    "ownerResponse": "Karthik, we love tight deadlines—they push us to be our best! Your girlfriend looked absolutely delighted. Quick turnarounds are our specialty!"
+  },
+  {
+    "id": 5,
+    "name": "Divya Srinivas",
+    "text": "Exceptional service! The whole team was attentive and creative. They made my proposal day the most romantic day of my life. Highly recommended!",
+    "rating": 5,
+    "role": "Proposal · Hyderabad",
+    "date": "2026-05-05",
+    "ownerResponse": "Divya, what an honor to be part of your love story! Your fiancé's 'yes' was the best part of our day. We wish you both a lifetime of perfect reveals!"
+  },
+  {
+    "id": 6,
+    "name": "Sanjay Kumar",
+    "text": "Booked for my wife's birthday surprise. Everything was coordinated perfectly. The attention to detail and professionalism is unmatched!",
+    "rating": 4,
+    "role": "Birthday Surprise · Hyderabad",
+    "date": "2026-04-28",
+    "ownerResponse": "Sanjay, we appreciate your trust! Your wife's joy was our reward. We look forward to creating more magical moments for your family in the future!"
+  }
+]

@@ -1,3 +1,17 @@
+// Initialize reviews data in localStorage from JSON if not already set
+async function initializeReviewsData(){
+  // Check if reviewsData is already in localStorage
+  if(!localStorage.getItem('reviewsData')){
+    try{
+      const response=await fetch('./data/reviews.json');
+      const reviews=await response.json();
+      localStorage.setItem('reviewsData',JSON.stringify(reviews));
+    }catch(error){
+      console.log('Could not initialize reviews from JSON file');
+    }
+  }
+}
+
 // PARTICLES
 const canvas=document.getElementById('particles');
 const ctx=canvas.getContext('2d');
@@ -74,14 +88,147 @@ document.querySelectorAll('.stat-num[data-count]').forEach(el=>counterObs.observ
 })();
 
 // TESTIMONIAL CAROUSEL
-let currentSlide=0;const totalSlides=4;
+let currentSlide=0;let totalSlides=0;
+
 function goToSlide(n){
   currentSlide=n;
   document.getElementById('testiSlides').style.transform=`translateX(-${n*100}%)`;
   document.querySelectorAll('.testi-dot').forEach((d,i)=>d.classList.toggle('active',i===n));
 }
+
 function changeSlide(dir){goToSlide((currentSlide+dir+totalSlides)%totalSlides)}
-setInterval(()=>changeSlide(1),5000);
+
+// Load and render reviews from JSON or localStorage
+async function loadReviews(){
+  try{
+    let allReviews=[];
+
+    // Check localStorage first for approved reviews
+    const stored=localStorage.getItem('reviewsData');
+    if(stored){
+      try{allReviews=JSON.parse(stored);}catch(e){}
+    }
+
+    // If no localStorage data, fetch from JSON file
+    if(allReviews.length===0){
+      const response=await fetch('./data/reviews.json');
+      allReviews=await response.json();
+    }
+
+    // Sort by rating (desc) then by date (desc), take top 5
+    const topReviews=allReviews
+      .sort((a,b)=>(b.rating-a.rating)||(new Date(b.date)-new Date(a.date)))
+      .slice(0,5);
+
+    totalSlides=topReviews.length;
+
+    // Render slides
+    const slidesContainer=document.getElementById('testiSlides');
+    slidesContainer.innerHTML='';
+
+    topReviews.forEach(review=>{
+      const stars='★'.repeat(review.rating);
+      const slide=document.createElement('div');
+      slide.className='testi-slide';
+      slide.innerHTML=`
+        <div class="testi-card">
+          <div class="testi-quote">"</div>
+          <div class="testi-stars">${stars}</div>
+          <p class="testi-text">${review.text}</p>
+          <div class="testi-author">${review.name}</div>
+          <div class="testi-role">${review.role}</div>
+          <div class="owner-response">
+            <div class="owner-response-header" onclick="toggleOwnerResponse(this)">
+              <span class="owner-name">muthu nani responded</span>
+              <span class="expand-icon">▼</span>
+            </div>
+            <div class="owner-response-text" style="display:none">${review.ownerResponse||'Thank you for your feedback!'}</div>
+          </div>
+        </div>
+      `;
+      slidesContainer.appendChild(slide);
+    });
+
+    // Render dots
+    const navContainer=document.getElementById('testiNav');
+    navContainer.innerHTML='';
+    for(let i=0;i<totalSlides;i++){
+      const dot=document.createElement('div');
+      dot.className='testi-dot'+(i===0?' active':'');
+      dot.onclick=()=>goToSlide(i);
+      navContainer.appendChild(dot);
+    }
+
+    // Auto-rotate carousel
+    setInterval(()=>changeSlide(1),5000);
+  }catch(error){
+    console.error('Error loading reviews:',error);
+  }
+}
+
+// Load reviews when DOM is ready
+document.addEventListener('DOMContentLoaded',async ()=>{
+  await initializeReviewsData();
+  loadReviews();
+});
+
+// Toggle owner response expand/collapse
+function toggleOwnerResponse(headerEl){
+  const textEl=headerEl.nextElementSibling;
+  const icon=headerEl.querySelector('.expand-icon');
+  const isExpanded=textEl.style.display!=='none';
+  textEl.style.display=isExpanded?'none':'block';
+  icon.style.transform=isExpanded?'rotate(0deg)':'rotate(180deg)';
+}
+
+// REVIEW SUBMISSION
+function submitReview(event){
+  event.preventDefault();
+  const name=document.getElementById('reviewName').value.trim();
+  const email=document.getElementById('reviewEmail').value.trim();
+  const role=document.getElementById('reviewRole').value.trim();
+  const rating=parseInt(document.getElementById('reviewRating').value);
+  const text=document.getElementById('reviewText').value.trim();
+  const msgEl=document.getElementById('reviewMessage');
+
+  if(!name||!email||!role||!rating||!text){
+    msgEl.style.display='block';
+    msgEl.className='review-message error';
+    msgEl.textContent='Please fill in all fields';
+    return;
+  }
+
+  const newReview={
+    id:Date.now(),
+    name,
+    email,
+    role,
+    rating,
+    text,
+    date:new Date().toISOString().split('T')[0]
+  };
+
+  // Get existing pending reviews from localStorage
+  let pendingReviews=[];
+  const stored=localStorage.getItem('pendingReviews');
+  if(stored){
+    try{pendingReviews=JSON.parse(stored);}catch(e){}
+  }
+
+  pendingReviews.push(newReview);
+  localStorage.setItem('pendingReviews',JSON.stringify(pendingReviews));
+
+  // Debug: log to console
+  console.log('Review saved! Total pending:', pendingReviews.length);
+  console.log('Pending reviews:', pendingReviews);
+
+  msgEl.style.display='block';
+  msgEl.className='review-message success';
+  msgEl.textContent='✓ Thank you! Your review has been submitted and is pending approval.';
+
+  document.getElementById('reviewForm').reset();
+  setTimeout(()=>{msgEl.style.display='none'},5000);
+}
 
 // WHATSAPP GREETING
 (()=>{

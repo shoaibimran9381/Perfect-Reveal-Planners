@@ -3,5 +3,10 @@
     "key": "cmd+alt+o",
     "command": "workbench.action.output.toggleOutput",
     "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+shift+l",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Open Live Server"
   }
 ]

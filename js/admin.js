@@ -125,6 +125,14 @@ async function loadDashboard() {
 
 async function verifyAdminAndLoad() {
   try {
+    const user = auth.currentUser;
+    // Only allow the specific UID
+    if (!user || user.uid !== 'wubt9aiq13XUjLrnEzLM5D7iqkA2') {
+      await signOut(auth);
+      setSignedInDisplay(false);
+      showLoginMessage('This account is not authorised for dashboard access.');
+      return;
+    }
     await loadDashboard();
     setSignedInDisplay(true);
   } catch (error) {

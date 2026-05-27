@@ -126,8 +126,9 @@ async function loadDashboard() {
 async function verifyAdminAndLoad() {
   try {
     const user = auth.currentUser;
-    // Only allow the specific UID
-    if (!user || user.uid !== 'wubt9aiq13XUjLrnEzLM5D7iqkA2') {
+    // Only allow specific UIDs
+    const allowedUIDs = ['wubt9aiq13XUjLrnEzLM5D7iqkA2', 'EIDSF6rqq8dTmWz3pGZoMjNWOF82'];
+    if (!user || !allowedUIDs.includes(user.uid)) {
       await signOut(auth);
       setSignedInDisplay(false);
       showLoginMessage('This account is not authorised for dashboard access.');

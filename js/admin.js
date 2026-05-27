@@ -82,10 +82,12 @@ function renderPendingReviews() {
       <div class="review-meta">${escapeHtml(review.email)} | ${escapeHtml(review.role)}</div>
       <div class="review-rating">${'★'.repeat(Number(review.rating))}</div>
       <div class="review-text">"${escapeHtml(review.text)}"</div>
+      ${review.ownerResponse ? `<div class="response"><strong>Your response:</strong>${escapeHtml(review.ownerResponse)}</div>` : ''}
       <div class="review-actions">
         <button class="action-btn btn-approve" onclick="approveReview('${review.id}')">Approve &amp; Publish</button>
         <button class="action-btn btn-reject" onclick="rejectReview('${review.id}')">Reject</button>
         <button class="action-btn" onclick="editPendingReview('${review.id}')">Edit Text</button>
+        <button class="action-btn" onclick="addOwnerResponse('${review.id}')">Owner Response</button>
       </div>
     </article>
   `).join('');
@@ -171,7 +173,7 @@ async function approveReview(id) {
     role: review.role,
     rating: review.rating,
     text: review.text,
-    ownerResponse: 'Thank you for your feedback!',
+    ownerResponse: review.ownerResponse || 'Thank you for your feedback!',
     createdAt: review.createdAt,
     publishedAt: serverTimestamp()
   });
@@ -195,6 +197,23 @@ async function editPendingReview(id) {
   if (!editedText || !editedText.trim()) return;
   await updateDoc(doc(db, 'reviewSubmissions', id), { text: editedText.trim() });
   showMessage('Review text updated.');
+  await loadDashboard();
+}
+
+async function addOwnerResponse(id) {
+  const review = pendingReviews.find(item => item.id === id);
+  if (!review) return;
+  const response = window.prompt(
+    'Write your response. This will appear publicly after you approve the review:',
+    review.ownerResponse || ''
+  );
+  if (response === null) return;
+  if (!response.trim()) {
+    showMessage('Owner response cannot be empty.', 'error');
+    return;
+  }
+  await updateDoc(doc(db, 'reviewSubmissions', id), { ownerResponse: response.trim() });
+  showMessage('Owner response saved. Approve and publish when ready.');
   await loadDashboard();
 }
 
@@ -257,6 +276,7 @@ window.showTab = showTab;
 window.approveReview = approveReview;
 window.rejectReview = rejectReview;
 window.editPendingReview = editPendingReview;
+window.addOwnerResponse = addOwnerResponse;
 window.deletePublishedReview = deletePublishedReview;
 window.importStarterReviews = importStarterReviews;
 

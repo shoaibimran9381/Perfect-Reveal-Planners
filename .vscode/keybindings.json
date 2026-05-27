@@ -1,5 +1,13 @@
 [
   {
+    "key": "cmd+alt+l",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Go Live (Script)",
+    "when": "editorTextFocus"
+  }
+]
+[
+  {
     "key": "cmd+alt+o",
     "command": "workbench.action.output.toggleOutput",
     "when": "editorTextFocus"

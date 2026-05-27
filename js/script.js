@@ -3,6 +3,7 @@ import {
   addDoc,
   collection,
   getDocs,
+  onSnapshot,
   getFirestore,
   serverTimestamp
 } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js';
@@ -161,8 +162,18 @@ function toggleOwnerResponse(headerElement) {
 }
 
 function renderReviews(reviews) {
+  // Normalize rating and date, then sort by rating (desc) then by published/created date (desc)
   const topReviews = reviews
-    .sort((first, second) => (second.rating - first.rating) || (reviewDateValue(second) - reviewDateValue(first)))
+    .map(r => ({
+      ...r,
+      rating: Number(r.rating) || 0,
+      _sortDate: (r.publishedAt && typeof r.publishedAt.toMillis === 'function')
+        ? r.publishedAt.toMillis()
+        : (r.createdAt && typeof r.createdAt.toMillis === 'function')
+          ? r.createdAt.toMillis()
+          : new Date(r.date || 0).getTime()
+    }))
+    .sort((a, b) => (b.rating - a.rating) || (b._sortDate - a._sortDate))
     .slice(0, 5);
 
   totalSlides = topReviews.length;
@@ -172,12 +183,13 @@ function renderReviews(reviews) {
   slidesContainer.innerHTML = '';
   navContainer.innerHTML = '';
 
-  topReviews.forEach(review => {
+  topReviews.forEach((review, idx) => {
     const stars = '★'.repeat(Number(review.rating));
     const slide = document.createElement('div');
     slide.className = 'testi-slide';
     slide.innerHTML = `
       <div class="testi-card">
+        ${idx === 0 ? '<div class="top-badge">Top review</div>' : ''}
         <div class="testi-quote">"</div>
         <div class="testi-stars">${stars}</div>
         <p class="testi-text">${escapeHtml(review.text)}</p>
@@ -209,28 +221,23 @@ function renderReviews(reviews) {
   if (totalSlides > 1) rotationTimer = setInterval(() => changeSlide(1), 5000);
 }
 
-async function loadStarterReviews() {
-  const response = await fetch('./data/reviews.json');
-  if (!response.ok) throw new Error('Reviews unavailable.');
-  return response.json();
-}
-
-async function loadReviews() {
-  try {
-    let reviews = [];
-    if (db) {
-      const snapshot = await getDocs(collection(db, 'publishedReviews'));
-      reviews = snapshot.docs.map(document => ({ id: document.id, ...document.data() }));
-    }
-    if (!reviews.length) reviews = await loadStarterReviews();
-    renderReviews(reviews);
-  } catch (error) {
-    try {
-      renderReviews(await loadStarterReviews());
-    } catch (fallbackError) {
-      document.getElementById('testiSlides').innerHTML = '<div class="testi-slide"><div class="testi-card"><p class="testi-text">Reviews are temporarily unavailable.</p></div></div>';
-    }
+function loadReviews() {
+  if (!db) {
+    document.getElementById('testiSlides').innerHTML = '<div class="testi-slide"><div class="testi-card"><p class="testi-text">Online reviews are not configured.</p></div></div>';
+    return;
   }
+
+  // Real-time listener: updates on any changes to publishedReviews
+  onSnapshot(collection(db, 'publishedReviews'), snapshot => {
+    const reviews = snapshot.docs.map(document => ({ id: document.id, ...document.data() }));
+    if (!reviews.length) {
+      document.getElementById('testiSlides').innerHTML = '<div class="testi-slide"><div class="testi-card"><p class="testi-text">No reviews published yet.</p></div></div>';
+      return;
+    }
+    renderReviews(reviews);
+  }, error => {
+    document.getElementById('testiSlides').innerHTML = '<div class="testi-slide"><div class="testi-card"><p class="testi-text">Reviews are temporarily unavailable.</p></div></div>';
+  });
 }
 
 function showReviewMessage(text, type) {

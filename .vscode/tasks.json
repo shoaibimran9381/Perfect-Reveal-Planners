@@ -17,5 +17,19 @@
         "runOn": "folderOpen"
       }
     }
+    ,
+    {
+      "label": "Go Live (Script)",
+      "type": "shell",
+      "command": "bash",
+      "args": ["${workspaceFolder}/go-live.sh"],
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    }
   ]
 }

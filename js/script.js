@@ -269,7 +269,7 @@ async function submitReview(event) {
       status: 'pending',
       createdAt: serverTimestamp()
     });
-    showReviewMessage('Thank you. Your review has been submitted for approval.', 'success');
+    showReviewMessage('Thank you for sharing your experience with us.', 'success');
     form.reset();
   } catch (error) {
     showReviewMessage('We could not submit your review right now. Please try again later.', 'error');

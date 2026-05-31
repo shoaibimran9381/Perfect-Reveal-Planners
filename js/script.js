@@ -93,36 +93,6 @@ const counterObserver = new IntersectionObserver(entries => {
 }, { threshold: 0.5 });
 document.querySelectorAll('.stat-num[data-count]').forEach(element => counterObserver.observe(element));
 
-// LOCAL LINK PRESS COUNTER
-(() => {
-  const storageKey = 'perfectRevealLinkPressCount';
-  const countElement = document.getElementById('linkPressCount');
-  const trackedLinkSelectors = [
-    'a[href*="wa.me"]',
-    'a[href*="instagram.com"]',
-    'button[onclick*="wa.me"]',
-    'button[onclick*="instagram.com"]'
-  ];
-
-  function getCount() {
-    return Number(localStorage.getItem(storageKey) || 0);
-  }
-
-  function updateCount() {
-    if (countElement) countElement.textContent = getCount();
-  }
-
-  function saveClick() {
-    localStorage.setItem(storageKey, String(getCount() + 1));
-    updateCount();
-  }
-
-  updateCount();
-  document.querySelectorAll(trackedLinkSelectors.join(',')).forEach(element => {
-    element.addEventListener('click', saveClick, { capture: true });
-  });
-})();
-
 // TESTIMONIAL CAROUSEL
 let currentSlide = 0;
 let totalSlides = 0;

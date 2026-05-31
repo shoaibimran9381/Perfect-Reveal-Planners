@@ -6,8 +6,8 @@ Static customer website with a Firebase-backed review submission and owner appro
 
 1. Create a Firebase project and register a Web App in the Firebase console.
 2. Create a Cloud Firestore database.
-3. Open **Authentication > Sign-in method** and enable **Email/Password**.
-4. In **Authentication > Users**, create the owner account that will sign in at `admin.html`.
+3. Open **Authentication > Sign-in method** and enable **Email/Password**. To let the owner sign in with Google, also enable **Google**.
+4. In **Authentication > Users**, create the owner account that will sign in at `admin.html`, or sign in once with the owner's Google account so Firebase creates the user.
 5. Copy the Web App `firebaseConfig` values into `js/firebase-config.js`.
 6. In Firestore, create an `admins` collection and add a document whose document ID is the owner's Firebase Authentication UID. The document can contain `{ "role": "owner" }`.
 7. Publish the rules in `firestore.rules` from the Firestore **Rules** tab, or deploy them with the Firebase CLI:

@@ -51,6 +51,11 @@
     .message { border-radius: 4px; display: none; margin-bottom: 1.2rem; padding: .9rem; }
     .message.success { background: rgba(74,222,128,.1); border: 1px solid #4ade80; color: #86efac; }
     .message.error { background: rgba(248,113,113,.1); border: 1px solid #f87171; color: #fca5a5; }
+    .login-divider { align-items: center; color: rgba(253,248,238,.45); display: flex; font-size: .78rem; gap: .8rem; letter-spacing: .08em; margin: 1.1rem 0; text-transform: uppercase; }
+    .login-divider::before, .login-divider::after { background: var(--line); content: ''; flex: 1; height: 1px; }
+    .google-btn { align-items: center; background: #fff; border: 0; border-radius: 3px; color: #1f1f1f; cursor: pointer; display: flex; font-weight: 600; gap: .7rem; justify-content: center; padding: .8rem 1.2rem; width: 100%; }
+    .google-btn:disabled { cursor: wait; opacity: .65; }
+    .google-icon { align-items: center; display: inline-flex; font-weight: 700; height: 1.3rem; justify-content: center; width: 1.3rem; }
     .empty-message { color: rgba(253,248,238,.45); font-style: italic; padding: 3rem; text-align: center; }
     .login-screen { align-items: center; background: var(--bg); display: flex; inset: 0; justify-content: center; position: fixed; z-index: 1000; }
     .login-panel { background: rgba(201,168,76,.05); border: 1px solid var(--line); border-radius: 4px; max-width: 410px; padding: 3rem; text-align: center; width: 90%; }
@@ -77,6 +82,8 @@
       <div class="form-group"><input type="email" id="emailInput" autocomplete="username" placeholder="Admin email" required></div>
       <div class="form-group"><input type="password" id="passwordInput" autocomplete="current-password" placeholder="Password" required></div>
       <button class="btn-submit" type="submit" style="width:100%;">Sign In</button>
+      <div class="login-divider">or</div>
+      <button class="google-btn" id="googleLoginButton" type="button"><span class="google-icon">G</span> Continue with Google</button>
     </form>
   </section>
 

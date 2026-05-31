@@ -1,8 +1,10 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js';
 import {
+  GoogleAuthProvider,
   getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut
 } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js';
 import {
@@ -10,6 +12,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -24,9 +27,11 @@ const loginScreen = document.getElementById('loginScreen');
 const adminScreen = document.getElementById('adminScreen');
 const logoutButton = document.getElementById('logoutButton');
 const loginForm = document.getElementById('loginForm');
+const googleLoginButton = document.getElementById('googleLoginButton');
 const manualForm = document.getElementById('manualReviewForm');
 let auth;
 let db;
+let googleProvider;
 let pendingReviews = [];
 let publishedReviews = [];
 
@@ -126,12 +131,14 @@ async function loadDashboard() {
 async function verifyAdminAndLoad() {
   try {
     const user = auth.currentUser;
-    // Only allow specific UIDs
-    const allowedUIDs = ['wubt9aiq13XUjLrnEzLM5D7iqkA2', 'EIDSF6rqq8dTmWz3pGZoMjNWOF82'];
-    if (!user || !allowedUIDs.includes(user.uid)) {
+    const adminSnapshot = user ? await getDoc(doc(db, 'admins', user.uid)) : null;
+    if (!user || !adminSnapshot.exists()) {
+      const adminHelp = user
+        ? ` Add Firestore document admins/${user.uid} for ${user.email || 'this account'}.`
+        : '';
       await signOut(auth);
       setSignedInDisplay(false);
-      showLoginMessage('This account is not authorised for dashboard access.');
+      showLoginMessage(`This account is not authorised for dashboard access.${adminHelp}`);
       return;
     }
     await loadDashboard();
@@ -154,9 +161,36 @@ async function authenticate(event) {
       document.getElementById('passwordInput').value
     );
   } catch (error) {
-    showLoginMessage('Unable to sign in. Check your administrator email and password.');
+    const message = {
+      'auth/invalid-credential': 'Firebase rejected this email/password. Check that this exact email exists in Authentication > Users and reset the password if needed.',
+      'auth/user-not-found': 'No Firebase user exists for this email address.',
+      'auth/wrong-password': 'The password is incorrect for this administrator account.',
+      'auth/invalid-email': 'Enter a valid administrator email address.',
+      'auth/too-many-requests': 'Too many failed attempts. Please wait a moment and try again.',
+      'auth/operation-not-allowed': 'Firebase Email/Password sign-in is not enabled for this project.'
+    }[error.code] || 'Unable to sign in. Check your Firebase Authentication setup.';
+    showLoginMessage(`${message} (${error.code || 'unknown error'})`);
   } finally {
     button.disabled = false;
+  }
+}
+
+async function authenticateWithGoogle() {
+  googleLoginButton.disabled = true;
+  try {
+    await signInWithPopup(auth, googleProvider);
+  } catch (error) {
+    const message = {
+      'auth/account-exists-with-different-credential': 'This email already uses another sign-in method. Sign in with email/password first, then link Google in Firebase if needed.',
+      'auth/cancelled-popup-request': 'Google sign-in was cancelled because another popup was already open.',
+      'auth/operation-not-allowed': 'Google sign-in is not enabled for this Firebase project.',
+      'auth/popup-blocked': 'Your browser blocked the Google sign-in popup. Allow popups for this site and try again.',
+      'auth/popup-closed-by-user': 'Google sign-in was closed before it finished.',
+      'auth/unauthorized-domain': 'This website domain is not authorised in Firebase Authentication. Add this domain in Authentication > Settings > Authorised domains.'
+    }[error.code] || 'Unable to sign in with Google. Check your Firebase Authentication setup.';
+    showLoginMessage(`${message} (${error.code || 'unknown error'})`);
+  } finally {
+    googleLoginButton.disabled = false;
   }
 }
 
@@ -252,11 +286,14 @@ if (!isFirebaseConfigured()) {
   showLoginMessage('Add your Firebase web configuration in js/firebase-config.js before using this dashboard.');
   loginForm.addEventListener('submit', event => event.preventDefault());
   loginForm.querySelector('button[type="submit"]').disabled = true;
+  googleLoginButton.disabled = true;
 } else {
   const app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
+  googleProvider = new GoogleAuthProvider();
   loginForm.addEventListener('submit', authenticate);
+  googleLoginButton.addEventListener('click', authenticateWithGoogle);
   manualForm.addEventListener('submit', addManualReview);
   onAuthStateChanged(auth, user => {
     if (user) {

@@ -48,6 +48,10 @@
     .form-group input, .form-group textarea, .form-group select { background: rgba(0,0,0,.3); border: 1px solid var(--line); border-radius: 3px; color: var(--cream); padding: .8rem; width: 100%; }
     .form-group textarea { min-height: 100px; resize: vertical; }
     .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--gold); outline: 0; }
+    .password-field { position: relative; }
+    .password-field input { padding-right: 4.4rem; }
+    .password-toggle { background: transparent; border: 0; color: var(--gold); cursor: pointer; font-size: .76rem; font-weight: 600; letter-spacing: .08em; padding: .4rem; position: absolute; right: .45rem; text-transform: uppercase; top: 50%; transform: translateY(-50%); }
+    .password-toggle:hover, .password-toggle:focus { color: var(--cream); outline: 0; }
     .message { border-radius: 4px; display: none; margin-bottom: 1.2rem; padding: .9rem; }
     .message.success { background: rgba(74,222,128,.1); border: 1px solid #4ade80; color: #86efac; }
     .message.error { background: rgba(248,113,113,.1); border: 1px solid #f87171; color: #fca5a5; }
@@ -80,7 +84,10 @@
       <p>Sign in with your Firebase administrator account</p>
       <div id="loginMessage" class="message error"></div>
       <div class="form-group"><input type="email" id="emailInput" autocomplete="username" placeholder="Admin email" required></div>
-      <div class="form-group"><input type="password" id="passwordInput" autocomplete="current-password" placeholder="Password" required></div>
+      <div class="form-group password-field">
+        <input type="password" id="passwordInput" autocomplete="current-password" placeholder="Password" required>
+        <button class="password-toggle" id="passwordToggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
+      </div>
       <button class="btn-submit" type="submit" style="width:100%;">Sign In</button>
       <div class="login-divider">or</div>
       <button class="google-btn" id="googleLoginButton" type="button"><span class="google-icon">G</span> Continue with Google</button>

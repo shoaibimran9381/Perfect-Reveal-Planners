@@ -28,6 +28,8 @@ const adminScreen = document.getElementById('adminScreen');
 const logoutButton = document.getElementById('logoutButton');
 const loginForm = document.getElementById('loginForm');
 const googleLoginButton = document.getElementById('googleLoginButton');
+const passwordInput = document.getElementById('passwordInput');
+const passwordToggle = document.getElementById('passwordToggle');
 const manualForm = document.getElementById('manualReviewForm');
 let auth;
 let db;
@@ -205,6 +207,14 @@ function showTab(tabName, button) {
   button.classList.add('active');
 }
 
+function togglePasswordVisibility() {
+  const showing = passwordInput.type === 'text';
+  passwordInput.type = showing ? 'password' : 'text';
+  passwordToggle.textContent = showing ? 'Show' : 'Hide';
+  passwordToggle.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+  passwordToggle.setAttribute('aria-pressed', String(!showing));
+}
+
 async function approveReview(id) {
   const review = pendingReviews.find(item => item.id === id);
   if (!review) return;
@@ -281,6 +291,8 @@ window.approveReview = approveReview;
 window.rejectReview = rejectReview;
 window.editPendingReview = editPendingReview;
 window.deletePublishedReview = deletePublishedReview;
+
+passwordToggle.addEventListener('click', togglePasswordVisibility);
 
 if (!isFirebaseConfigured()) {
   showLoginMessage('Add your Firebase web configuration in js/firebase-config.js before using this dashboard.');

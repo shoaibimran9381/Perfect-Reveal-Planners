@@ -1,22 +1,3 @@
-// Mobile nav toggle
-document.addEventListener('DOMContentLoaded', function() {
-  const nav = document.getElementById('navbar');
-  const navToggle = document.getElementById('navToggle');
-  if (nav && navToggle) {
-    navToggle.addEventListener('click', function() {
-      nav.classList.toggle('open');
-      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
-      navToggle.setAttribute('aria-expanded', !expanded);
-    });
-    // Close nav when clicking a link (optional)
-    nav.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        nav.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
-      });
-    });
-  }
-});
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js';
 import {
   addDoc,
@@ -309,40 +290,6 @@ window.changeSlide = changeSlide;
 window.submitReview = submitReview;
 
 document.addEventListener('DOMContentLoaded', loadReviews);
-
-// MOBILE NAV TOGGLE
-(() => {
-  const navToggle = document.getElementById('navToggle');
-  const navbarEl = document.getElementById('navbar');
-  const navLinks = Array.from(document.querySelectorAll('.nav-links a'));
-
-  if (!navToggle || !navbarEl) return;
-
-  function setAria(open) {
-    navToggle.setAttribute('aria-expanded', String(open));
-  }
-
-  navToggle.addEventListener('click', () => {
-    const isOpen = navbarEl.classList.toggle('open');
-    setAria(isOpen);
-  });
-
-  // Close menu when a link is clicked (mobile)
-  navLinks.forEach(link => link.addEventListener('click', () => {
-    if (navbarEl.classList.contains('open')) {
-      navbarEl.classList.remove('open');
-      setAria(false);
-    }
-  }));
-
-  // Close mobile menu on resize to desktop
-  window.addEventListener('resize', () => {
-    if (window.innerWidth > 900 && navbarEl.classList.contains('open')) {
-      navbarEl.classList.remove('open');
-      setAria(false);
-    }
-  });
-})();
 
 // WHATSAPP GREETING
 (() => {

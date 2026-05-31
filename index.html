@@ -338,6 +338,40 @@
   </div>
 </div>
 
+<script>
+  (() => {
+    const navToggle = document.getElementById('navToggle');
+    const navbar = document.getElementById('navbar');
+    const navMenu = navbar.querySelector('.nav-links');
+    const navLinks = Array.from(document.querySelectorAll('.nav-links a'));
+
+    if (!navToggle || !navbar || !navMenu) return;
+
+    function setMenuOpen(open) {
+      navbar.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+
+    navToggle.addEventListener('click', () => {
+      setMenuOpen(!navbar.classList.contains('open'));
+    });
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => setMenuOpen(false));
+    });
+
+    document.addEventListener('click', event => {
+      if (!navbar.classList.contains('open')) return;
+      if (navMenu.contains(event.target) || navToggle.contains(event.target)) return;
+      setMenuOpen(false);
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) setMenuOpen(false);
+    });
+  })();
+</script>
 <script type="module" src="js/script.js"></script>
 </body>
 </html>

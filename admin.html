@@ -61,15 +61,8 @@
     .google-btn:disabled { cursor: wait; opacity: .65; }
     .google-icon { align-items: center; display: inline-flex; font-weight: 700; height: 1.3rem; justify-content: center; width: 1.3rem; }
     .empty-message { color: rgba(253,248,238,.45); font-style: italic; padding: 3rem; text-align: center; }
-    .login-screen { align-items: stretch; background: var(--bg); display: flex; inset: 0; justify-content: flex-start; position: fixed; z-index: 1000; }
-    .login-branding { background: linear-gradient(135deg, rgba(201,168,76,.15) 0%, rgba(201,168,76,.05) 100%); border-right: 1px solid var(--line); display: flex; flex-direction: column; justify-content: center; padding: 4rem 3rem; width: 45%; }
-    .login-branding h2 { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; margin-bottom: 1rem; }
-    .login-branding .brand-tagline { color: rgba(253,248,238,.7); font-size: 1.1rem; font-style: italic; margin-bottom: 2.5rem; }
-    .login-branding .brand-divider { background: var(--gold); height: 2px; margin: 2.5rem 0; width: 60px; }
-    .login-branding .brand-team { color: rgba(253,248,238,.6); font-size: .95rem; line-height: 1.8; }
-    .login-branding .team-title { color: var(--gold); font-weight: 600; margin-bottom: .6rem; }
-    .login-panel-wrapper { align-items: center; display: flex; flex: 1; justify-content: center; padding: 3rem; }
-    .login-panel { background: rgba(201,168,76,.05); border: 1px solid var(--line); border-radius: 4px; max-width: 410px; padding: 3rem; text-align: center; width: 100%; }
+    .login-screen { align-items: center; background: var(--bg); display: flex; inset: 0; justify-content: center; position: fixed; z-index: 1000; }
+    .login-panel { background: rgba(201,168,76,.05); border: 1px solid var(--line); border-radius: 4px; max-width: 410px; padding: 3rem; text-align: center; width: 90%; }
     .login-panel h1 { color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; margin-bottom: .6rem; }
     .login-panel p { color: rgba(253,248,238,.6); margin-bottom: 1.8rem; }
     .toolbar { align-items: center; display: flex; justify-content: flex-end; margin-bottom: 1.2rem; }
@@ -79,11 +72,6 @@
       .tabs { overflow-x: auto; }
       .tab-button { padding: .8rem; white-space: nowrap; }
       .stats { grid-template-columns: 1fr; }
-      .login-screen { flex-direction: column; }
-      .login-branding { border-right: none; border-bottom: 1px solid var(--line); padding: 2rem 1.5rem; width: 100%; }
-      .login-branding h2 { font-size: 2rem; }
-      .login-panel-wrapper { padding: 2rem 1rem; }
-      .login-panel { padding: 2rem; }
     }
   </style>
 </head>
@@ -91,31 +79,19 @@
   <button class="logout-btn" id="logoutButton" onclick="logout()">Logout</button>
 
   <section id="loginScreen" class="login-screen">
-    <div class="login-branding">
-      <h2>Perfect Reveal Planners</h2>
-      <p class="brand-tagline">We Plan. You Get the Magic.</p>
-      <div class="brand-divider"></div>
-      <div class="brand-team">
-        <div class="team-title">Crafted By</div>
-        <p>Muthu Nani</p>
-        <p style="margin-top: 1.5rem; font-size: 0.85rem; color: rgba(253,248,238,.5);">Hyderabad's trusted celebration experts, delivering 200+ magical surprise experiences with 100% satisfaction.</p>
+    <form id="loginForm" class="login-panel">
+      <h1>Owner Access</h1>
+      <p>Sign in with your Firebase administrator account</p>
+      <div id="loginMessage" class="message error"></div>
+      <div class="form-group"><input type="email" id="emailInput" autocomplete="username" placeholder="Admin email" required></div>
+      <div class="form-group password-field">
+        <input type="password" id="passwordInput" autocomplete="current-password" placeholder="Password" required>
+        <button class="password-toggle" id="passwordToggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
       </div>
-    </div>
-    <div class="login-panel-wrapper">
-      <form id="loginForm" class="login-panel">
-        <h1>Owner Access</h1>
-        <p>Sign in with your Firebase administrator account</p>
-        <div id="loginMessage" class="message error"></div>
-        <div class="form-group"><input type="email" id="emailInput" autocomplete="username" placeholder="Admin email" required></div>
-        <div class="form-group password-field">
-          <input type="password" id="passwordInput" autocomplete="current-password" placeholder="Password" required>
-          <button class="password-toggle" id="passwordToggle" type="button" aria-label="Show password" aria-pressed="false">Show</button>
-        </div>
-        <button class="btn-submit" type="submit" style="width:100%;">Sign In</button>
-        <div class="login-divider">or</div>
-        <button class="google-btn" id="googleLoginButton" type="button"><span class="google-icon">G</span> Continue with Google</button>
-      </form>
-    </div>
+      <button class="btn-submit" type="submit" style="width:100%;">Sign In</button>
+      <div class="login-divider">or</div>
+      <button class="google-btn" id="googleLoginButton" type="button"><span class="google-icon">G</span> Continue with Google</button>
+    </form>
   </section>
 
   <main id="adminScreen" class="admin-container">

@@ -133,22 +133,30 @@ async function loadDashboard() {
 async function verifyAdminAndLoad() {
   try {
     const user = auth.currentUser;
-    const adminSnapshot = user ? await getDoc(doc(db, 'admins', user.uid)) : null;
-    if (!user || !adminSnapshot.exists()) {
-      const adminHelp = user
-        ? ` Add Firestore document admins/${user.uid} for ${user.email || 'this account'}.`
-        : '';
+    const OWNER_EMAIL = 'nanimuthu044@gmail.com';
+    
+    if (!user) {
+      setSignedInDisplay(false);
+      showLoginMessage('No user logged in.');
+      return;
+    }
+    
+    console.log('Current user email:', user.email);
+    console.log('Owner email:', OWNER_EMAIL);
+    
+    if (user.email?.toLowerCase() !== OWNER_EMAIL.toLowerCase()) {
       await signOut(auth);
       setSignedInDisplay(false);
-      showLoginMessage(`This account is not authorised for dashboard access.${adminHelp}`);
+      showLoginMessage(`Only the owner (${OWNER_EMAIL}) can access this dashboard. You are logged in as: ${user.email || 'unknown'}`);
       return;
     }
     await loadDashboard();
     setSignedInDisplay(true);
   } catch (error) {
+    console.error('Verification error:', error);
     await signOut(auth);
     setSignedInDisplay(false);
-    showLoginMessage('This account is not authorised for dashboard access.');
+    showLoginMessage('Error verifying access. Please try again.');
   }
 }
 
